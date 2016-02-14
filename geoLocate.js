@@ -3,7 +3,7 @@
 // author: Bo Ericsson, bo@boe.net, 2016
 'use strict';
 
-if (process.argv.length < 3) {
+if (process.argv.length < 4) {
   console.log("usage: input-json-file output-json-file address-attribute");
   console.log("example: geoLocate input.json output.json address\n");
   return;
