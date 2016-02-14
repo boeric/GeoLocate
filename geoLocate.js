@@ -3,38 +3,83 @@
 // author: Bo Ericsson, bo@boe.net, 2016
 'use strict';
 
+if (process.argv.length < 3) {
+  console.log("usage: input-json-file output-json-file address-attribute");
+  console.log("example: geoLocate input.json output.json address\n");
+  return;
+}
+var inputFile = process.argv[2];
+var outputFile = process.argv[3];
+var addressProp = process.argv[4];
+
+// input and output files are type JSON?
+if (inputFile.indexOf(".json") == -1 || outputFile.indexOf(".json") == -1) {
+  console.log("input and output files must be .json\n");
+  return;
+} 
+
+// is there an address attribute?
+if (addressProp == undefined) {
+  console.log("address property is undefined\n");
+  return;
+}
+
 // dependencies
-var fs = require('fs');
+var fs = require("fs");
 var util = require("util");
-var rest = require('restler');
+var rest = require("restler");
 
 // geo location url
 var url = "https://maps.googleapis.com/maps/api/geocode/json";
-var authKey = "&key=AIzaSyDyMR5XIV9tyExPpDM1c5dtlT9jIOhPCmc";
+var authKey = "&key=AIzaSyDyMR5XIV9tyExPpDM1c5dtlT9jIOhPCmc"; // Bo E's private key; please get your own at https://developers.google.com/maps/documentation/geocoding/get-api-key
 
 // restler request object
 var reqObj = { headers: { 'Accept': 'application/json' }, rejectUnauthorized: false }
 
-// read and parse the input file
-var input = fs.readFileSync('input.json', 'utf8')
-input = JSON.parse(input);
+// read the input file
+var input;
+try {
+  input = fs.readFileSync(inputFile, 'utf8')
+}
+catch(e) {
+  console.log("could not open input file " + inputFile);
+  return;
+}
+
+// parse
+try {
+  input = JSON.parse(input);
+}
+catch(e) {
+  console.log("could not parse input file: ", e)
+  return;
+}
 //console.log(JSON.stringify(input, null, 2));
 
-// define the output array
+// verify property
+if (input[0][addressProp] == undefined) {
+  console.log("address property [" + addressProp + "] not found")
+  return;
+}
+
+
+// define the output array (in which all successful geo-coded items will be placed)
 var output = [];
 
-
+// geo locate each item and write to output array
 var count = 0;
-function processNode() {
+function geoLocate() {
   // get next item
   var item = input.shift();
 
   // are we done?
   if (item == undefined) end();
+
+  // still items to process
   console.log("\nprocessing item " + count++ + " (" + input.length + " remaining)");
 
   // generate query
-  var query = "?address=" + encodeURIComponent(item.address) + authKey;
+  var query = "?address=" + encodeURIComponent(item[addressProp]) + authKey;
   //var query = "?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA" + authKey; // sample query that works
   console.log("url: [" + url + query + "]");
 
@@ -64,10 +109,10 @@ function processNode() {
     }
     else { console.log("Error: could not obtain geo location for item: " + item.address) }
 
-    setTimeout(function(d, i) { processNode(); }, 100);
+    setTimeout(function(d, i) { geoLocate(); }, 100);
   })
 }
-processNode();
+geoLocate();
 
 
 function end() {
@@ -75,8 +120,8 @@ function end() {
   //console.log(outStr);
 
   try {
-    fs.writeFileSync('output.json', outStr);
-    console.log("\nGenerated output.json file...");
+    fs.writeFileSync(outputFile, outStr);
+    console.log("\nGenerated " + outputFile);
   }
   catch(e) {
     console.log("Error: could not write output file, reason: ", e)
