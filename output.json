@@ -1,0 +1,29 @@
+[
+ {
+  "name:": "Name 1",
+  "origAddress": "1 Main Street, Los Gatos, CA",
+  "fullAddress": "1 W Main St, Los Gatos, CA 95030, USA",
+  "lat": 37.2212976,
+  "lng": -121.9814445,
+  "streetNumber": "1",
+  "street": "West Main Street",
+  "city": "Los Gatos",
+  "county": "Santa Clara County",
+  "country": "US",
+  "state": "CA",
+  "zip": "95030"
+ },
+ {
+  "name:": "Name 2",
+  "origAddress": "California St and Battery St, San Francisco, CA",
+  "fullAddress": "California St & Battery St, San Francisco, CA 94104, USA",
+  "lat": 37.7932278,
+  "lng": -122.3999906,
+  "street": "California Street",
+  "city": "SF",
+  "county": "San Francisco County",
+  "country": "US",
+  "state": "CA",
+  "zip": "94104"
+ }
+]
