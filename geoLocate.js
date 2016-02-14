@@ -3,11 +3,19 @@
 // author: Bo Ericsson, bo@boe.net, 2016
 'use strict';
 
+// dependencies
+var fs = require("fs");
+var util = require("util");
+var rest = require("restler");
+
+// check arguments
 if (process.argv.length < 4) {
-  console.log("usage: input-json-file output-json-file address-attribute");
+  console.log("usage: geoLocate input-json-file output-json-file address-attribute");
   console.log("example: geoLocate input.json output.json address\n");
   return;
 }
+
+// get file names and address property
 var inputFile = process.argv[2];
 var outputFile = process.argv[3];
 var addressProp = process.argv[4];
@@ -23,11 +31,6 @@ if (addressProp == undefined) {
   console.log("address property is undefined\n");
   return;
 }
-
-// dependencies
-var fs = require("fs");
-var util = require("util");
-var rest = require("restler");
 
 // geo location url
 var url = "https://maps.googleapis.com/maps/api/geocode/json";
