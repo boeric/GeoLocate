@@ -10,8 +10,8 @@ var rest = require("restler");
 
 // check arguments
 if (process.argv.length < 4) {
-  console.log("usage: geoLocate input-json-file output-json-file address-attribute");
-  console.log("example: geoLocate input.json output.json address\n");
+  console.log("usage: node geoLocate input-json-file output-json-file address-attribute");
+  console.log("example: node geoLocate input.json output.json address\n");
   return;
 }
 

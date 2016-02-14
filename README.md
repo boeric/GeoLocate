@@ -4,7 +4,7 @@ The script generates latitude and longitude information for each item in the inp
 
 The command line is as follows: 
 
-**geoLocate input-json-file output-json-file addressProperty**
+**node geoLocate input-json-file output-json-file addressProperty**
 
 where: 
 – **input-json-file** and **output-json-file** filenames must end in ".json"
